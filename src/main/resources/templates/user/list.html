@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/layout::head">
+</head>
+<body>
+
+</body>
+<!--<body>-->
+<!--&lt;!&ndash;导航栏&ndash;&gt;-->
+<!--<header th:replace="fragments/layout::header">-->
+<!--</header>-->
+<!--&lt;!&ndash;页面主体&ndash;&gt;-->
+<!--<main class="container-fluid main">-->
+<!--    <div class="row">-->
+<!--        &lt;!&ndash;    侧边菜单栏&ndash;&gt;-->
+<!--        <aside th:replace="fragments/layout::side_menu"></aside>-->
+<!--        <div class="col-md-10">-->
+<!--            &lt;!&ndash;            页面主要内容&ndash;&gt;-->
+<!--            &lt;!&ndash;面包屑&ndash;&gt;-->
+<!--            <div class="breadcrumb bg-white" style="margin-bottom: 0">-->
+<!--                <a class="breadcrumb-item" href="#"><i class="fa fa-dashboard fa-fw"></i>主页</a>-->
+<!--                <a class="breadcrumb-item" href="#">票据详情</a>-->
+<!--            </div>-->
+<!--            <div style="margin: 5px;">-->
+<!--                &lt;!&ndash;            内容显示主要面板&ndash;&gt;-->
+<!--                <a id="button1" class="btn btn-secondary" onclick="getIdSelections();" href="#">获取选项ID-->
+<!--                </a>-->
+<!--                <a id="button2" class="btn btn-success" onclick="unChecked();" href="#"><i-->
+<!--                        class="fa fa-undo"></i>取消选择-->
+<!--                </a>-->
+<!--                <a class="btn btn-primary" onclick="reload();" href="#">重新加载数据</a>-->
+<!--                <button id="addUserBtn" class="btn btn-warning" data-toggle="modal"-->
+<!--                        data-target="#addUserModal"><i class="fa fa-plus"></i> 添加用户-->
+<!--                </button>-->
+<!--            </div>-->
+
+<!--            <table id="table" class="table-striped table-bordered">-->
+<!--            </table>-->
+<!--        </div>-->
+<!--    </div>-->
+<!--</main>-->
+<!--<!//- 页脚-&ndash;&gt;-->
+<!--<footer th:replace="fragments/layout::footer"></footer>-->
+
+
+<!--&lt;!&ndash; Button trigger modal &ndash;&gt;-->
+<!--&lt;!&ndash;<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalCenter">&ndash;&gt;-->
+<!--&lt;!&ndash;    Launch demo modal&ndash;&gt;-->
+<!--&lt;!&ndash;</button>&ndash;&gt;-->
+<!--&lt;!&ndash;添加用户弹出层&ndash;&gt;-->
+<!--&lt;!&ndash; Modal &ndash;&gt;-->
+<!--<div class="modal fade" id="addUserModal" tabindex="-1" role="dialog"-->
+<!--     aria-labelledby="exampleModalCenterTitle" aria-hidden="true">-->
+<!--    <div class="modal-dialog modal-dialog-centered modal-lg" role="document">-->
+<!--        <div class="modal-content">-->
+<!--            <div class="modal-header">-->
+<!--                <h5 class="modal-title" id="exampleModalCenterTitle">新增用户</h5>-->
+<!--                <button type="button" class="close" data-dismiss="modal" aria-label="Close">-->
+<!--                    <span aria-hidden="true">&times;</span>-->
+<!--                </button>-->
+<!--            </div>-->
+<!--            <div class="modal-body" id="userFormContainer">-->
+<!--                <form id="addUserForm" novalidate="novalidate" method="post" action="">-->
+<!--                    <div class="form-group">-->
+<!--                        <label for="username">用户名</label>-->
+<!--                        <input type="text" class="form-control" id="username"-->
+<!--                               placeholder="不能为空,至少三个字符"-->
+<!--                               required="required" name="username">-->
+<!--                        <div class="invalid-feedback">用户名至少3个字符以上!</div>-->
+<!--                    </div>-->
+
+<!--                    <div class="form-group">-->
+<!--                        <label for="role" class="control-label">用户类型</label>-->
+<!--                        <select id="role" class="custom-select" name="roles[0].id">-->
+<!--                            <option value="1" selected>普通用户</option>-->
+<!--                            <option value="2">管理员</option>-->
+<!--                        </select>-->
+<!--                    </div>-->
+
+<!--                    <div class="form-group">-->
+<!--                        <label for="email">email地址</label>-->
+<!--                        <input type="email" class="form-control" id="email"-->
+<!--                               placeholder="输入合法的Email地址"-->
+<!--                               name="email" required="required">-->
+<!--                        <div class="invalid-feedback">电子邮箱的格式不正确!</div>-->
+<!--                    </div>-->
+<!--                </form>-->
+<!--            </div>-->
+<!--            <div class="modal-footer">-->
+<!--                <button type="button" class="btn btn-secondary" data-dismiss="modal">关闭</button>-->
+<!--                <button type="button" class="btn btn-primary" id="addUser" onclick="addUser();">提交-->
+<!--                </button>-->
+<!--            </div>-->
+<!--        </div>-->
+<!--    </div>-->
+<!--</div>-->
+
+
+<!--<div class="modal fade" id="viewUserModal" tabindex="-1" role="dialog"-->
+<!--     aria-labelledby="exampleModalCenterTitle" aria-hidden="true">-->
+<!--    <div class="modal-dialog modal-dialog-centered modal-lg" role="document">-->
+<!--        <div class="modal-content">-->
+<!--            <div class="modal-header">-->
+<!--                <h5 class="modal-title text-primary">用户详情</h5>-->
+<!--                <button type="button" class="close" data-dismiss="modal" aria-label="Close">-->
+<!--                    <span aria-hidden="true">&times;</span>-->
+<!--                </button>-->
+<!--            </div>-->
+<!--            <div class="modal-body" id="viewUserContainer">-->
+
+<!--            </div>-->
+<!--            <div class="modal-footer">-->
+<!--                <button type="button" class="btn btn-primary" data-dismiss="modal">关闭</button>-->
+<!--            </div>-->
+<!--        </div>-->
+<!--    </div>-->
+<!--</div>-->
+
+<!--&lt;!&ndash;编辑用户&ndash;&gt;-->
+<!--<div class="modal fade" id="editUserModal" tabindex="-1" role="dialog"-->
+<!--     aria-labelledby="exampleModalCenterTitle" aria-hidden="true">-->
+<!--    <div class="modal-dialog modal-dialog-centered modal-lg" role="document">-->
+<!--        <div class="modal-content">-->
+<!--            <div class="modal-header">-->
+<!--                <h5 class="modal-title text-primary">编辑用户</h5>-->
+<!--                <button type="button" class="close" data-dismiss="modal" aria-label="Close">-->
+<!--                    <span aria-hidden="true">&times;</span>-->
+<!--                </button>-->
+<!--            </div>-->
+<!--            <div class="modal-body" id="editUserContainer">-->
+
+<!--            </div>-->
+<!--            <div class="modal-footer">-->
+<!--                <button type="button" class="btn btn-secondary" data-dismiss="modal">关闭</button>-->
+<!--                <button type="button" class="btn btn-primary" id="updateUser"-->
+<!--                        onclick="updateUser();">提交-->
+<!--                </button>-->
+<!--            </div>-->
+<!--        </div>-->
+<!--    </div>-->
+<!--</div>-->
+<!--<script th:src="@{/site/js/user.js}"></script>-->
+<!--<script th:src="@{/bootstrap4/js/jquery-ui.js}"></script>-->
+<!--<script>-->
+<!--    // Modal拖动-->
+<!--    $(document).on("show.bs.modal", ".modal", function () {-->
+<!--        // $('.modal-dialog').draggable();-->
+<!--        $('#addUserModal').draggable();-->
+<!--        $('#editUserModal').draggable();-->
+<!--        $(this).css("overflow", "hidden");-->
+<!--// 不拖动透明背景-->
+<!--    });-->
+<!--</script>-->
+<!--</body>-->
+<!--</html>-->

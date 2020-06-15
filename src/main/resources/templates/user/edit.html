@@ -1,0 +1,44 @@
+<!--<container>-->
+
+<!--    <form id="editUserForm" class="needs-validation" novalidate th:object="${model.user}">-->
+<!--        <input type="hidden" name="id" th:value="*{id}">-->
+<!--        <div class="form-group">-->
+<!--            <label for="username">用户名</label>-->
+<!--            <input type="text" id="username" class="form-control"-->
+<!--                   name="username" th:value="*{username}" disabled>-->
+<!--        </div>-->
+
+<!--        <div class="form-group">-->
+<!--            <label for="role" class="control-label">用户类型</label>-->
+<!--            <select id="role" class="custom-select" name="roles[0].id">-->
+<!--                <option th:each="role:${model.roleList}" th:value="${role.id}"-->
+<!--                        th:text="${commons.getRoleZhName(role)}"-->
+<!--                        th:selected="${model.user.roles[0].id eq role.id}"></option>-->
+<!--            </select>-->
+<!--        </div>-->
+
+<!--        <div class="form-group">-->
+<!--            <label for="email">email地址</label>-->
+<!--            <input type="email" class="form-control" id="email" placeholder="输入合法的Email地址"-->
+<!--                   name="email" th:value="*{email}" required="required">-->
+<!--            <div class="invalid-feedback">电子邮箱的格式不正确!</div>-->
+<!--        </div>-->
+
+<!--        <div class="form-group">-->
+<!--            <div class="form-check form-check-inline">-->
+<!--                <input class="form-check-input" type="radio" name="enable" id="inlineRadio1"-->
+<!--                       value="1"-->
+<!--                       th:checked="${model.user.enable==1}"-->
+<!--                >-->
+<!--                <label class="form-check-label" for="inlineRadio1">激活</label>-->
+<!--            </div>-->
+<!--            <div class="form-check form-check-inline">-->
+<!--                <input class="form-check-input" type="radio" name="enable" id="inlineRadio2"-->
+<!--                       value="0"-->
+<!--                       th:checked="${model.user.enable==0}"-->
+<!--                >-->
+<!--                <label class="form-check-label" for="inlineRadio2">未激活</label>-->
+<!--            </div>-->
+<!--        </div>-->
+<!--    </form>-->
+<!--</container>-->
