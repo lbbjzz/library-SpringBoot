@@ -1,65 +1,25 @@
 package com.zsc.javaee_booktest.entity;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import lombok.Data;
+
+import javax.persistence.*;
 import java.util.Date;
 
 @Entity
 @Table(name = "t_return_record")
+@Data
 public class ReturnRecord {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    @Column(nullable = false)
-    private int user_id;
+    @Column(name = "user_id")
+    private int userId;
 
-    @Column(nullable = false)
-    private Date return_date;
+    @Column(name = "return_date")
+    private Date returnDate;
 
-    @Column(nullable = false)
-    private int is_overdue;
+    @Column(name = "is_overdue")
+    private int isOverdue;
 
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public int getUserId() {
-        return user_id;
-    }
-
-    public void setUserId(int user_id) {
-        this.user_id = user_id;
-    }
-
-    public Date getReturnDate() {
-        return return_date;
-    }
-
-    public void setReturnDate(Date return_date) {
-        this.return_date = return_date;
-    }
-
-    public int getIsOverdue() {
-        return is_overdue;
-    }
-
-    public void setIsOverdue(int is_overdue) {
-        this.is_overdue = is_overdue;
-    }
-
-    @Override
-    public String toString() {
-        return "ReturnRecord{" +
-                "id = " + id +
-                ",userId = " + user_id +
-                ",returnDate = " + return_date +
-                ",isOverdue = " + is_overdue +
-                "}";
-    }
 }

@@ -1,37 +1,17 @@
 package com.zsc.javaee_booktest.entity;
 
+import lombok.Data;
+
 import javax.persistence.*;
 
 @Entity
 @Table(name = "t_authority")
+@Data
 public class Authority {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    @Column(nullable = false)
+    @Column(name = "authority")
     private String authority;
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public String getAuthority() {
-        return authority;
-    }
-
-    public void setAuthority(String authority) {
-        this.authority = authority;
-    }
-
-    @Override
-    public String toString() {
-        return "Authority{" +
-                "id = " + id +
-                ",authority = " + authority +
-                "}";
-    }
 }

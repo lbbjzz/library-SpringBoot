@@ -1,65 +1,24 @@
 package com.zsc.javaee_booktest.entity;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import lombok.Data;
+
+import javax.persistence.*;
 import java.util.Date;
 
 @Entity
 @Table(name = "t_borrow_record")
+@Data
 public class BorrowRecord {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    @Column(nullable = false)
-    private int user_id;
+    @Column(name = "userId")
+    private int userId;
 
-    @Column(nullable = false)
+    @Column(name = "borrowData")
     private Date borrow_date;
 
-    @Column(nullable = false)
-    private Date return_date;
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public int getUserId() {
-        return user_id;
-    }
-
-    public void setUserId(int user_id) {
-        this.user_id = user_id;
-    }
-
-    public Date getReturnDate() {
-        return return_date;
-    }
-
-    public void setReturnDate(Date return_date) {
-        this.return_date = return_date;
-    }
-
-    public Date getBorrowDate() {
-        return borrow_date;
-    }
-
-    public void setBorrowDate(Date borrow_date) {
-        this.borrow_date = borrow_date;
-    }
-
-    @Override
-    public String toString() {
-        return "BorrowRecord{" +
-                "id = " + id +
-                ",userId = " + user_id +
-                ",borrowDate = " + borrow_date +
-                ",returnDate = " + return_date +
-                "}";
-    }
+    @Column(name = "returnDate")
+    private Date returnDate;
 }
