@@ -12,13 +12,7 @@ public class BorrowRecord {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
-
-    @Column(name = "userId")
     private int userId;
-
-    @Column(name = "borrowData")
     private Date borrow_date;
-
-    @Column(name = "returnDate")
     private Date returnDate;
 }

@@ -5,23 +5,19 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import java.util.Date;
-
-import static org.junit.jupiter.api.Assertions.*;
-
 @SpringBootTest
 class BookReposityTest {
     @Autowired
-    private BookReposity bookReposity;
+    private BookRepository bookRepository;
 
     @Test
     void findAll(){
-        System.out.println(bookReposity.findAll());
+        System.out.println(bookRepository.findAll());
     }
 
     @Test
     void findById(){
-        Book book = bookReposity.findById(1).get();
+        Book book = bookRepository.findById(1).get();
         System.out.println(book);
     }
 
@@ -32,7 +28,7 @@ class BookReposityTest {
         book.setAuthor("dddd");
         book.setPubHouse("yyyy");
         book.setPubDate("2001");
-        Book book1 = bookReposity.save(book);
+        Book book1 = bookRepository.save(book);
         System.out.println(book1);
     }
 
@@ -44,12 +40,17 @@ class BookReposityTest {
         book.setAuthor("测试");
         book.setPubHouse("测试");
         book.setPubDate("测试");
-        Book book1 = bookReposity.save(book);
+        Book book1 = bookRepository.save(book);
         System.out.println(book1);
     }
 
     @Test
     void delete(){
-        bookReposity.deleteById(3);
+        bookRepository.deleteById(3);
+    }
+
+    @Test
+    void findByBookName(){
+        System.out.println(bookRepository.findByBookName("白夜行"));
     }
 }

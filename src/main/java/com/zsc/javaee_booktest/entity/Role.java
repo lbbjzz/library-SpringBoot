@@ -11,10 +11,6 @@ public class Role {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
-
-    @Column(name = "user_id")
     private int userId;
-
-    @Column(name = "authority_id")
     private int authorityId;
 }

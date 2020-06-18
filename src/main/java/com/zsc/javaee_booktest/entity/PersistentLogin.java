@@ -12,16 +12,13 @@ import java.sql.Date;
 @Table(name = "persistent_logins")
 @Data
 public class PersistentLogin {
-    @Column(name = "username", nullable = false)
+    @Column(nullable = false)
     private String username;
-
     @Id
-    @Column(name = "series", nullable = false)
+    @Column(nullable = false)
     private String series;
-
-    @Column(name = "token", nullable = false)
+    @Column(nullable = false)
     private String token;
-
-    @Column(name = "lastUsed", nullable = false)
+    @Column(nullable = false)
     private Date lastUsed;
 }

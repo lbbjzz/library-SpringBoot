@@ -1,7 +1,7 @@
 package com.zsc.javaee_booktest.controller;
 
 import com.zsc.javaee_booktest.entity.User;
-import com.zsc.javaee_booktest.jpa.UserJPA;
+import com.zsc.javaee_booktest.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -13,7 +13,7 @@ import java.util.List;
 @RequestMapping("/user")
 public class UserController {
     @Autowired
-    private UserJPA userJPA;
+    private UserRepository userJPA;
 
     @RequestMapping(value = "/list",method = RequestMethod.GET)
     public List<User> getUserEntity()
