@@ -8,5 +8,6 @@ import java.util.List;
 
 public interface BookRepository extends JpaRepository<Book, Integer>{
     @Query(value = "select * from t_book where book_name = ?1", nativeQuery = true)
-    List<Book> findByBookName(String bookName);
+    public List<Book> getByBookName(String bookName);
+
 }

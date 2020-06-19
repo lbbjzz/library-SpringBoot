@@ -51,6 +51,7 @@ class BookReposityTest {
 
     @Test
     void findByBookName(){
-        System.out.println(bookRepository.findByBookName("白夜行"));
+        System.out.println(bookRepository.getByBookName("白夜行"));
     }
+
 }
