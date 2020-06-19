@@ -1,6 +1,5 @@
 package com.zsc.javaee_booktest.entity;
 
-import com.zsc.javaee_booktest.service.UserService;
 import lombok.Data;
 
 import javax.persistence.*;
@@ -8,7 +7,7 @@ import javax.persistence.*;
 @Entity
 @Table(name = "t_user")
 @Data
-public class User implements UserService {
+public class User{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
