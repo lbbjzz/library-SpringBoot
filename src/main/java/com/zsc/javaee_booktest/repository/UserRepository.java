@@ -10,6 +10,6 @@ import java.util.List;
 
 public interface UserRepository extends JpaRepository<User, Integer>, QuerydslPredicateExecutor<User> {
     @Query(value = "select * from t_user where user_name = ?1", nativeQuery = true)
-    public List<User> getByUserName(String userName);
+    public User getByUserName(String userName);
 
 }

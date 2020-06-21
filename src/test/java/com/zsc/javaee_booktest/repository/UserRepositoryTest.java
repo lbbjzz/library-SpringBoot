@@ -9,6 +9,7 @@ import com.zsc.javaee_booktest.service.UserService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import java.util.List;
 
@@ -35,5 +36,11 @@ class UserRepositoryTest {
     void getAuthorityByUserName(){
         List<Authority> authorities = userService.getAuthorityByUserName("小余");
         System.out.println(authorities);
+    }
+
+    @Test
+    void EncodingTest(){
+        BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+        System.out.println(passwordEncoder.encode("123456"));
     }
 }
