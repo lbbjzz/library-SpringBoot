@@ -8,4 +8,5 @@ import java.util.List;
 
 public interface UserService extends UserDetailsService {
     public List<Authority> getAuthorityByUserName(String userName);
+    public String saveWithEncoding(User user);
 }

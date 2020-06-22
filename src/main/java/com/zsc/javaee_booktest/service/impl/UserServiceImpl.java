@@ -3,12 +3,14 @@ package com.zsc.javaee_booktest.service.impl;
 import com.querydsl.core.types.Predicate;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.zsc.javaee_booktest.entity.*;
+import com.zsc.javaee_booktest.repository.RoleRepository;
 import com.zsc.javaee_booktest.repository.UserRepository;
 import com.zsc.javaee_booktest.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -17,13 +19,16 @@ import java.util.stream.Collectors;
 @Service
 public class UserServiceImpl implements UserService {
     @Autowired
-    UserService userService;
+    private UserService userService;
 
     @Autowired
-    UserRepository userRepository;
+    private UserRepository userRepository;
 
     @Autowired
-    JPAQueryFactory queryFactory;
+    private JPAQueryFactory queryFactory;
+
+    @Autowired
+    private RoleRepository roleRepository;
 
     QAuthority qAuthority = QAuthority.authority1;
     QRole qRole = QRole.role;
@@ -41,6 +46,25 @@ public class UserServiceImpl implements UserService {
                 .where(predicate)
                 .fetch();
         return authorities;
+    }
+
+    @Override
+    public String saveWithEncoding(User user) {
+        String msg;
+        if(userRepository.getByUserName(user.getUserName()) != null){
+            msg = "fail";
+            return msg;
+        }else {
+            BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+            user.setPassword(passwordEncoder.encode(user.getPassword()));
+            User newUser = userRepository.save(user);
+            Role role = new Role();
+            role.setUserId(newUser.getId());
+            role.setAuthorityId(2);
+            roleRepository.save(role);
+            msg = "success";
+            return msg;
+        }
     }
 
     @Override
