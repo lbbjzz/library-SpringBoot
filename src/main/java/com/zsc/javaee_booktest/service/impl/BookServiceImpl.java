@@ -2,9 +2,11 @@ package com.zsc.javaee_booktest.service.impl;
 
 import com.zsc.javaee_booktest.entity.Book;
 import com.zsc.javaee_booktest.entity.BorrowRecord;
+import com.zsc.javaee_booktest.entity.ReturnRecord;
 import com.zsc.javaee_booktest.entity.User;
 import com.zsc.javaee_booktest.repository.BookRepository;
 import com.zsc.javaee_booktest.repository.BorrowRecordRepository;
+import com.zsc.javaee_booktest.repository.ReturnRecordRepository;
 import com.zsc.javaee_booktest.service.BookService;
 import com.zsc.javaee_booktest.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +22,9 @@ public class BookServiceImpl implements BookService {
 
     @Autowired
     private BorrowRecordRepository borrowRecordRepository;
+
+    @Autowired
+    private ReturnRecordRepository returnRecordRepository;
 
     @Autowired
     private UserService userService;
@@ -58,10 +63,35 @@ public class BookServiceImpl implements BookService {
         }
     }
 
+    /*
+    * @Author Kami
+    * @Description 用户归还书籍功能，并将归还记录写入归还记录表，如果归还时间超过规定的时间，则为逾期
+    * @Date 6:24 2020/6/24
+    * @Param [bookId]
+    * @return java.lang.String
+    **/
     @Override
     public String bookReturn(int bookId) {
         User user = userService.getUser();
         Book book = bookRepository.findById(bookId).get();
-        return null;
+        BorrowRecord borrowRecord = borrowRecordRepository.findByBookIdAndUserId(book.getId(), user.getId());
+        if(borrowRecord == null){
+            return "fail";
+        } else{
+            ReturnRecord returnRecord = new ReturnRecord();
+            Date date = new Date();
+            returnRecord.setBookId(book.getId());
+            returnRecord.setUserId(user.getId());
+            returnRecord.setReturnDate(date);
+            if(borrowRecord.getReturnDate().compareTo(date) < 0){
+                returnRecord.setIsOverdue(1);
+            }
+            returnRecordRepository.save(returnRecord);
+            borrowRecord.setIsReturned(1);
+            borrowRecordRepository.save(borrowRecord);
+            book.setQuantity(book.getQuantity() + 1);
+            bookRepository.save(book);
+            return "success";
+        }
     }
 }

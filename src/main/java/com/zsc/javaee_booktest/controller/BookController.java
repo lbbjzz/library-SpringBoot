@@ -74,4 +74,9 @@ public class BookController {
     public String borrow(@PathVariable int bookId){
         return bookService.bookBorrow(bookId);
     }
+    
+    @GetMapping("/return/{bookId}")
+    public String returned(@PathVariable int bookId){
+        return bookService.bookReturn(bookId);
+    }
 }
