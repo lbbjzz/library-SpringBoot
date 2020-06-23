@@ -26,7 +26,7 @@ public class BookServiceImpl implements BookService {
 
     /**
     * @Author Kami
-    * @Description
+    * @Description 用户借阅书籍功能，并将借阅记录写入借阅记录表
     * @Date 3:09 2020/6/24
     * @Param [bookId]
     * @return java.lang.String

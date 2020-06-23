@@ -40,6 +40,13 @@ public class UserServiceImpl implements UserService {
     QRole qRole = QRole.role;
     QUser qUser = QUser.user;
 
+    /*
+    * @Author Kami
+    * @Description 得到用户拥有的所有权限
+    * @Date 3:52 2020/6/24
+    * @Param [userName]
+    * @return java.util.List<com.zsc.javaee_booktest.entity.Authority>
+    **/
     @Override
     public List<Authority> getAuthorityByUserName(String userName) {
         Predicate predicate = qUser.userName.eq(userName);
@@ -54,6 +61,13 @@ public class UserServiceImpl implements UserService {
         return authorities;
     }
 
+    /*
+    * @Author Kami
+    * @Description 用户注册功能，将用户密码转换为密文后写入数据库中
+    * @Date 3:50 2020/6/24
+    * @Param [user]
+    * @return java.lang.String
+    **/
     @Override
     public String saveWithEncoding(User user) {
         String msg;
@@ -73,6 +87,13 @@ public class UserServiceImpl implements UserService {
         }
     }
 
+    /*
+    * @Author Kami
+    * @Description 获取当前登录的用户
+    * @Date 3:51 2020/6/24
+    * @Param []
+    * @return com.zsc.javaee_booktest.entity.User
+    **/
     @Override
     public User getUser() {
         SecurityContext context = SecurityContextHolder.getContext();
