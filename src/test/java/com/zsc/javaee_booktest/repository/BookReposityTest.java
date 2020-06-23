@@ -5,6 +5,10 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+
 @SpringBootTest
 class BookReposityTest {
     @Autowired
@@ -49,4 +53,21 @@ class BookReposityTest {
         bookRepository.deleteById(3);
     }
 
+    @Test
+    void testDate(){
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        Date date = new Date();
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(date);
+        System.out.println(sdf.format(calendar.getTime()));
+        calendar.add(Calendar.DATE, 30);
+        System.out.println(sdf.format(calendar.getTime()));
+        try {
+            Date d = sdf.parse(sdf.format(calendar.getTime()));
+            System.out.println(d);
+        } catch (Exception e){
+            e.printStackTrace();
+        }
+
+    }
 }

@@ -4,6 +4,7 @@ import com.zsc.javaee_booktest.entity.Book;
 import com.zsc.javaee_booktest.entity.User;
 import com.zsc.javaee_booktest.repository.BookRepository;
 import com.zsc.javaee_booktest.repository.UserRepository;
+import com.zsc.javaee_booktest.service.BookService;
 import com.zsc.javaee_booktest.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -20,6 +21,9 @@ import org.springframework.web.bind.annotation.*;
 public class BookController {
     @Autowired
     private BookRepository bookRepository;
+
+    @Autowired
+    private BookService bookService;
 
     @Autowired
     private UserService userService;
@@ -66,9 +70,8 @@ public class BookController {
         bookRepository.deleteById(id);
     }
 
-    @GetMapping("/borrow/{id}")
-    public void borrow(){
-        User user = userService.getUser();
-
+    @GetMapping("/borrow/{bookId}")
+    public String borrow(@PathVariable int bookId){
+        return bookService.bookBorrow(bookId);
     }
 }
