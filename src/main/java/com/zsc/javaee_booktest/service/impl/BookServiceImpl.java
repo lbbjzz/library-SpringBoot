@@ -26,7 +26,7 @@ public class BookServiceImpl implements BookService {
 
     /**
     * @Author Kami
-    * @Description 用户借阅书籍功能，并将借阅记录写入借阅记录表
+    * @Description 用户借阅书籍功能，并将借阅记录写入借阅记录表,如果用户已经借阅了此书，则不能再借阅。
     * @Date 3:09 2020/6/24
     * @Param [bookId]
     * @return java.lang.String
@@ -37,6 +37,8 @@ public class BookServiceImpl implements BookService {
         Book book = bookRepository.findById(bookId).get();
         if(book.getQuantity() <= 0){
             return "fail";
+        } else if(borrowRecordRepository.findByBookIdAndUserId(book.getId(), user.getId()) != null){
+            return "exist";
         } else {
             book.setQuantity(book.getQuantity() - 1);
             bookRepository.save(book);
