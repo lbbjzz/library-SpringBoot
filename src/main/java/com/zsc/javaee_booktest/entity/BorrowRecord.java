@@ -16,4 +16,5 @@ public class BorrowRecord {
     private int bookId;
     private Date borrow_date;
     private Date returnDate;
+    private int isReturned;
 }

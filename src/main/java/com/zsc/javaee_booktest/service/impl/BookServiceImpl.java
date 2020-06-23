@@ -55,4 +55,11 @@ public class BookServiceImpl implements BookService {
             return "success";
         }
     }
+
+    @Override
+    public String bookReturn(int bookId) {
+        User user = userService.getUser();
+        Book book = bookRepository.findById(bookId).get();
+        return null;
+    }
 }
