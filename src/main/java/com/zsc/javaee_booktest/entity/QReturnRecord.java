@@ -19,6 +19,8 @@ public class QReturnRecord extends EntityPathBase<ReturnRecord> {
 
     public static final QReturnRecord returnRecord = new QReturnRecord("returnRecord");
 
+    public final NumberPath<Integer> bookId = createNumber("bookId", Integer.class);
+
     public final NumberPath<Integer> id = createNumber("id", Integer.class);
 
     public final NumberPath<Integer> isOverdue = createNumber("isOverdue", Integer.class);

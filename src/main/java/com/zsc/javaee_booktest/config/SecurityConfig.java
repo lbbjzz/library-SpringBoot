@@ -33,7 +33,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/").permitAll()
                 .anyRequest().authenticated();
         //关闭csrf保护功能
-//        http.csrf().disable();
+        http.csrf().disable();
         //使用自定义的登录窗口
         http.formLogin();
 /*        http.formLogin()
@@ -42,9 +42,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .defaultSuccessUrl("/")
                 .failureForwardUrl("/userLogin?error");*/
         //实现注销
-//        http.logout()
-//                .logoutUrl("/mylogout")
-//                .logoutSuccessUrl("/userLogin");
+       http.logout()
+                .logoutUrl("/userlogout")
+                .logoutSuccessUrl("/userLogin");
 
         //记住我
 //        http.rememberMe()

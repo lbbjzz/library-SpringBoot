@@ -3,11 +3,17 @@ package com.zsc.javaee_booktest.service.impl;
 import com.querydsl.core.types.Predicate;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.zsc.javaee_booktest.entity.*;
+import com.zsc.javaee_booktest.entity.QAuthority;
+import com.zsc.javaee_booktest.entity.QRole;
+import com.zsc.javaee_booktest.entity.QUser;
 import com.zsc.javaee_booktest.repository.RoleRepository;
 import com.zsc.javaee_booktest.repository.UserRepository;
 import com.zsc.javaee_booktest.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.context.SecurityContext;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -65,6 +71,16 @@ public class UserServiceImpl implements UserService {
             msg = "success";
             return msg;
         }
+    }
+
+    @Override
+    public User getUser() {
+        SecurityContext context = SecurityContextHolder.getContext();
+        Authentication authentication = context.getAuthentication();
+        UserDetails principal = (UserDetails) authentication.getPrincipal();
+        String userName = principal.getUsername();
+        User user = userRepository.getByUserName(userName);
+        return user;
     }
 
     @Override

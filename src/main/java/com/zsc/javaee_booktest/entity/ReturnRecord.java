@@ -13,6 +13,7 @@ public class ReturnRecord {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
     private int userId;
+    private int bookId;
     private Date returnDate;
     private int isOverdue;
 

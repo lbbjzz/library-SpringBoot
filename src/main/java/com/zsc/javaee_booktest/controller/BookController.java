@@ -1,11 +1,18 @@
 package com.zsc.javaee_booktest.controller;
 
 import com.zsc.javaee_booktest.entity.Book;
+import com.zsc.javaee_booktest.entity.User;
 import com.zsc.javaee_booktest.repository.BookRepository;
+import com.zsc.javaee_booktest.repository.UserRepository;
+import com.zsc.javaee_booktest.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContext;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -14,10 +21,19 @@ public class BookController {
     @Autowired
     private BookRepository bookRepository;
 
+    @Autowired
+    private UserService userService;
+
     @GetMapping("/findAll/{page}/{size}")
     public Page<Book> findAll(@PathVariable int page, @PathVariable int size){
         Pageable pageable = PageRequest.of(page - 1, size);
         return bookRepository.findAll(pageable);
+    }
+
+    @GetMapping("/findByName/{bookName}/{page}/{size}")
+    public Page<Book> findByName(@PathVariable String bookName, @PathVariable int page, @PathVariable int size){
+        Pageable pageable = PageRequest.of(page - 1, size);
+        return bookRepository.getByBookName(bookName, pageable);
     }
 
     @PostMapping("/save")
@@ -29,6 +45,7 @@ public class BookController {
             return "fail";
         }
     }
+
     @GetMapping("/findById/{id}")
     public Book findById(@PathVariable int id){
         return bookRepository.findById(id).get();
@@ -47,5 +64,11 @@ public class BookController {
     @DeleteMapping("/deleteById/{id}")
     public void deleteById(@PathVariable int id){
         bookRepository.deleteById(id);
+    }
+
+    @GetMapping("/borrow/{id}")
+    public void borrow(){
+        User user = userService.getUser();
+
     }
 }

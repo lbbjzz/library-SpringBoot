@@ -19,6 +19,8 @@ public class QBorrowRecord extends EntityPathBase<BorrowRecord> {
 
     public static final QBorrowRecord borrowRecord = new QBorrowRecord("borrowRecord");
 
+    public final NumberPath<Integer> bookId = createNumber("bookId", Integer.class);
+
     public final DateTimePath<java.util.Date> borrow_date = createDateTime("borrow_date", java.util.Date.class);
 
     public final NumberPath<Integer> id = createNumber("id", Integer.class);

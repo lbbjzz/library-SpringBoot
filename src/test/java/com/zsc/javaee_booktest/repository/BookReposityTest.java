@@ -49,9 +49,4 @@ class BookReposityTest {
         bookRepository.deleteById(3);
     }
 
-    @Test
-    void findByBookName(){
-        System.out.println(bookRepository.getByBookName("白夜行"));
-    }
-
 }
