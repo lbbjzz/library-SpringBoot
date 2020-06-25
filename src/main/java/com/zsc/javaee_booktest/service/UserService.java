@@ -9,8 +9,9 @@ import java.util.List;
 
 @Service
 public interface UserService extends UserDetailsService {
+
     public List<Authority> getAuthorityByUserName(String userName);
     public String saveWithEncoding(User user);
     public User getUser();
-
+    public List<User> getAllUsers();
 }

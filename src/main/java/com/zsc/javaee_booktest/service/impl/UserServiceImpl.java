@@ -10,6 +10,8 @@ import com.zsc.javaee_booktest.repository.RoleRepository;
 import com.zsc.javaee_booktest.repository.UserRepository;
 import com.zsc.javaee_booktest.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheConfig;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContext;
@@ -22,6 +24,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.stream.Collectors;
 
+@CacheConfig(cacheNames = "user")
 @Service
 public class UserServiceImpl implements UserService {
     @Autowired
@@ -36,9 +39,16 @@ public class UserServiceImpl implements UserService {
     @Autowired
     private RoleRepository roleRepository;
 
+
     QAuthority qAuthority = QAuthority.authority1;
     QRole qRole = QRole.role;
     QUser qUser = QUser.user;
+
+    @Override
+    @Cacheable(value = "getAllUser")
+    public List<User> getAllUsers() {
+        return userRepository.findAll();
+    }
 
     /*
     * @Author Kami

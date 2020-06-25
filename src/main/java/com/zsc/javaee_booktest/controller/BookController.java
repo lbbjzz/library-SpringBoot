@@ -1,20 +1,16 @@
 package com.zsc.javaee_booktest.controller;
 
 import com.zsc.javaee_booktest.entity.Book;
-import com.zsc.javaee_booktest.entity.User;
 import com.zsc.javaee_booktest.repository.BookRepository;
-import com.zsc.javaee_booktest.repository.UserRepository;
 import com.zsc.javaee_booktest.service.BookService;
 import com.zsc.javaee_booktest.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContext;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/book")
@@ -27,6 +23,11 @@ public class BookController {
 
     @Autowired
     private UserService userService;
+
+    @GetMapping("/allBooks")
+    public List<Book> getAllBooks() {
+        return bookService.getAllBooks();
+    }
 
     @GetMapping("/findAll/{page}/{size}")
     public Page<Book> findAll(@PathVariable int page, @PathVariable int size){

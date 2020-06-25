@@ -10,10 +10,12 @@ import com.zsc.javaee_booktest.repository.ReturnRecordRepository;
 import com.zsc.javaee_booktest.service.BookService;
 import com.zsc.javaee_booktest.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 
 @Service
 public class BookServiceImpl implements BookService {
@@ -28,6 +30,12 @@ public class BookServiceImpl implements BookService {
 
     @Autowired
     private UserService userService;
+
+    @Override
+    @Cacheable(value = "getAllBooks")
+    public List<Book> getAllBooks() {
+        return bookRepository.findAll();
+    }
 
     /**
     * @Author Kami

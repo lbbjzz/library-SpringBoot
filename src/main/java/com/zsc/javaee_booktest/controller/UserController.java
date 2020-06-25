@@ -2,10 +2,9 @@ package com.zsc.javaee_booktest.controller;
 
 import com.zsc.javaee_booktest.entity.User;
 import com.zsc.javaee_booktest.repository.UserRepository;
+import com.zsc.javaee_booktest.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -14,12 +13,19 @@ import java.util.List;
 public class UserController {
     @Autowired
     private UserRepository userJPA;
+    @Autowired
+    UserService userService;
 
-    @RequestMapping(value = "/list",method = RequestMethod.GET)
-    public List<User> getUserEntity()
-    {
-        return userJPA.findAll();
+    @GetMapping("/list")
+    public List<User> getAllUsers() {
+        return userService.getAllUsers();
     }
+
+//    @RequestMapping(value = "/list",method = RequestMethod.GET)
+//    public List<User> getUserEntity()
+//    {
+//        return userJPA.findAll();
+//    }
 
     @RequestMapping(value = "/update",method = RequestMethod.GET)
     public User update(User user)
