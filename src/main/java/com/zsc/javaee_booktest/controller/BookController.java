@@ -4,6 +4,7 @@ import com.zsc.javaee_booktest.entity.Book;
 import com.zsc.javaee_booktest.repository.BookRepository;
 import com.zsc.javaee_booktest.service.BookService;
 import com.zsc.javaee_booktest.service.UserService;
+import com.zsc.javaee_booktest.utils.PageUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -11,6 +12,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/book")
@@ -24,26 +26,26 @@ public class BookController {
     @Autowired
     private UserService userService;
 
-    @GetMapping("/allBooks")
-    public List<Book> getAllBooks() {
-        return bookService.getAllBooks();
-    }
 
     @GetMapping("/findAll/{page}/{size}")
-    public Page<Book> findAll(@PathVariable int page, @PathVariable int size){
-        Pageable pageable = PageRequest.of(page - 1, size);
-        return bookRepository.findAll(pageable);
+    public Map<String, Object> findAll(@PathVariable int page, @PathVariable int size){
+        List<Book> books = bookService.getAllBooks(page, size);
+        PageUtils pageUtils = new PageUtils();
+        Map<String, Object> pageInfo = pageUtils.startPage(books, page, size);
+        return pageInfo;
     }
 
     @GetMapping("/findByName/{bookName}/{page}/{size}")
-    public Page<Book> findByName(@PathVariable String bookName, @PathVariable int page, @PathVariable int size){
-        Pageable pageable = PageRequest.of(page - 1, size);
-        return bookRepository.getByBookName(bookName, pageable);
+    public Map<String, Object> findByName(@PathVariable String bookName, @PathVariable int page, @PathVariable int size){
+        List<Book> booksByName = bookService.getByBookName(bookName);
+        PageUtils pageUtils = new PageUtils();
+        Map<String, Object> pageInfo = pageUtils.startPage(booksByName, page, size);
+        return pageInfo;
     }
 
     @PostMapping("/save")
     public String save(@RequestBody Book book){
-        Book result = bookRepository.save(book);
+        Book result = bookService.save(book);
         if(result != null){
             return "success";
         } else {
@@ -53,12 +55,12 @@ public class BookController {
 
     @GetMapping("/findById/{id}")
     public Book findById(@PathVariable int id){
-        return bookRepository.findById(id).get();
+        return bookService.getByBookId(id);
     }
 
     @PutMapping("/update")
     public String update(@RequestBody Book book){
-        Book result = bookRepository.save(book);
+        Book result = bookService.save(book);
         if(result != null){
             return "success";
         } else {
@@ -66,9 +68,9 @@ public class BookController {
         }
     }
 
-    @DeleteMapping("/deleteById/{id}")
+    @GetMapping("/deleteById/{id}")
     public void deleteById(@PathVariable int id){
-        bookRepository.deleteById(id);
+        bookService.delete(id);
     }
 
     @GetMapping("/borrow/{bookId}")

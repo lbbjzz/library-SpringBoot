@@ -1,18 +1,25 @@
 package com.zsc.javaee_booktest.repository;
 
 import com.zsc.javaee_booktest.entity.Book;
+import com.zsc.javaee_booktest.utils.PageUtils;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.redis.core.RedisTemplate;
 
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Date;
+import java.util.*;
 
 @SpringBootTest
 class BookReposityTest {
     @Autowired
     private BookRepository bookRepository;
+
+    @Autowired
+    private RedisTemplate redisTemplate;
 
     @Test
     void findAll(){
@@ -68,6 +75,11 @@ class BookReposityTest {
         } catch (Exception e){
             e.printStackTrace();
         }
+
+    }
+
+    @Test
+    void testPage(){
 
     }
 }

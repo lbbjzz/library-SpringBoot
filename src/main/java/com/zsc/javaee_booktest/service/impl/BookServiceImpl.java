@@ -10,12 +10,16 @@ import com.zsc.javaee_booktest.repository.ReturnRecordRepository;
 import com.zsc.javaee_booktest.service.BookService;
 import com.zsc.javaee_booktest.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 
-import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 @Service
 public class BookServiceImpl implements BookService {
@@ -31,11 +35,39 @@ public class BookServiceImpl implements BookService {
     @Autowired
     private UserService userService;
 
+
+
     @Override
-    @Cacheable(value = "getAllBooks")
-    public List<Book> getAllBooks() {
+    @Cacheable(cacheNames = "book", key = "'getAllBooks'")
+    public List<Book> getAllBooks(int page, int size) {
         return bookRepository.findAll();
     }
+
+    @Override
+    @Cacheable(cacheNames = "book", key = "'getByBookName' + #bookName")
+    public List<Book> getByBookName(String bookName){
+        return bookRepository.getByBookName(bookName);
+    }
+
+    @Override
+    @Cacheable(cacheNames = "book", key = "'getByBookId' + #id")
+    public Book getByBookId(int id){
+        return bookRepository.findById(id).get();
+    }
+
+    @Override
+    @CacheEvict(cacheNames = "book", allEntries = true)
+    public Book save(Book book){
+        return bookRepository.save(book);
+    }
+
+    @Override
+    @CacheEvict(cacheNames = "book", allEntries = true)
+    public void delete(int id){
+        bookRepository.deleteById(id);
+    }
+
+
 
     /**
     * @Author Kami
@@ -47,24 +79,22 @@ public class BookServiceImpl implements BookService {
     @Override
     public String bookBorrow(int bookId) {
         User user = userService.getUser();
-        Book book = bookRepository.findById(bookId).get();
+        Book book = getByBookId(bookId);
         if(book.getQuantity() <= 0){
             return "fail";
         } else if(borrowRecordRepository.findByBookIdAndUserId(book.getId(), user.getId()) != null){
             return "exist";
         } else {
             book.setQuantity(book.getQuantity() - 1);
-            bookRepository.save(book);
+            save(book);
             Date date = new Date();
             Calendar calendar = Calendar.getInstance();
             calendar.setTime(date);
-            System.out.println(calendar.getTime());
             BorrowRecord borrowRecord = new BorrowRecord();
             borrowRecord.setBookId(book.getId());
             borrowRecord.setUserId(user.getId());
             borrowRecord.setBorrow_date(calendar.getTime());
             calendar.add(Calendar.DATE, 30);
-            System.out.println(calendar.getTime());
             borrowRecord.setReturnDate(calendar.getTime());
             borrowRecordRepository.save(borrowRecord);
             return "success";
@@ -81,7 +111,7 @@ public class BookServiceImpl implements BookService {
     @Override
     public String bookReturn(int bookId) {
         User user = userService.getUser();
-        Book book = bookRepository.findById(bookId).get();
+        Book book = getByBookId(bookId);
         BorrowRecord borrowRecord = borrowRecordRepository.findByBookIdAndUserId(book.getId(), user.getId());
         if(borrowRecord == null){
             return "fail";
@@ -98,7 +128,7 @@ public class BookServiceImpl implements BookService {
             borrowRecord.setIsReturned(1);
             borrowRecordRepository.save(borrowRecord);
             book.setQuantity(book.getQuantity() + 1);
-            bookRepository.save(book);
+            save(book);
             return "success";
         }
     }
