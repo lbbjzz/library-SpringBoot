@@ -5,18 +5,14 @@ import com.zsc.javaee_booktest.entity.BorrowRecord;
 import com.zsc.javaee_booktest.entity.ReturnRecord;
 import com.zsc.javaee_booktest.entity.User;
 import com.zsc.javaee_booktest.repository.BookRepository;
-import com.zsc.javaee_booktest.repository.BorrowRecordRepository;
 import com.zsc.javaee_booktest.repository.ReturnRecordRepository;
 import com.zsc.javaee_booktest.service.BookService;
+import com.zsc.javaee_booktest.service.BorrowRecordService;
+import com.zsc.javaee_booktest.service.ReturnRecordService;
 import com.zsc.javaee_booktest.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheEvict;
-import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
@@ -27,10 +23,10 @@ public class BookServiceImpl implements BookService {
     private BookRepository bookRepository;
 
     @Autowired
-    private BorrowRecordRepository borrowRecordRepository;
+    private BorrowRecordService borrowRecordService;
 
     @Autowired
-    private ReturnRecordRepository returnRecordRepository;
+    private ReturnRecordService returnRecordService;
 
     @Autowired
     private UserService userService;
@@ -82,7 +78,7 @@ public class BookServiceImpl implements BookService {
         Book book = getByBookId(bookId);
         if(book.getQuantity() <= 0){
             return "fail";
-        } else if(borrowRecordRepository.findByBookIdAndUserId(book.getId(), user.getId()) != null){
+        } else if(borrowRecordService.getByBookIdAndUserId(book.getId(), user.getId()) != null){
             return "exist";
         } else {
             book.setQuantity(book.getQuantity() - 1);
@@ -96,7 +92,7 @@ public class BookServiceImpl implements BookService {
             borrowRecord.setBorrow_date(calendar.getTime());
             calendar.add(Calendar.DATE, 30);
             borrowRecord.setReturnDate(calendar.getTime());
-            borrowRecordRepository.save(borrowRecord);
+            borrowRecordService.save(borrowRecord);
             return "success";
         }
     }
@@ -112,7 +108,7 @@ public class BookServiceImpl implements BookService {
     public String bookReturn(int bookId) {
         User user = userService.getUser();
         Book book = getByBookId(bookId);
-        BorrowRecord borrowRecord = borrowRecordRepository.findByBookIdAndUserId(book.getId(), user.getId());
+        BorrowRecord borrowRecord = borrowRecordService.getByBookIdAndUserId(book.getId(), user.getId());
         if(borrowRecord == null){
             return "fail";
         } else{
@@ -124,9 +120,9 @@ public class BookServiceImpl implements BookService {
             if(borrowRecord.getReturnDate().compareTo(date) < 0){
                 returnRecord.setIsOverdue(1);
             }
-            returnRecordRepository.save(returnRecord);
+            returnRecordService.save(returnRecord);
             borrowRecord.setIsReturned(1);
-            borrowRecordRepository.save(borrowRecord);
+            borrowRecordService.save(borrowRecord);
             book.setQuantity(book.getQuantity() + 1);
             save(book);
             return "success";

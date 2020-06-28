@@ -18,14 +18,7 @@ import java.util.Map;
 @RequestMapping("/book")
 public class BookController {
     @Autowired
-    private BookRepository bookRepository;
-
-    @Autowired
     private BookService bookService;
-
-    @Autowired
-    private UserService userService;
-
 
     @GetMapping("/findAll/{page}/{size}")
     public Map<String, Object> findAll(@PathVariable int page, @PathVariable int size){
