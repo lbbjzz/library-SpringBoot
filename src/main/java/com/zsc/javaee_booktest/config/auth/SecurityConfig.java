@@ -1,4 +1,4 @@
-package com.zsc.javaee_booktest.config;
+package com.zsc.javaee_booktest.config.auth;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -15,6 +15,18 @@ import javax.sql.DataSource;
 
 @EnableWebSecurity
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
+    @Autowired
+    private AuthenticationEntryPoint authenticationEntryPoint;
+
+    @Autowired
+    private AuthenticationSuccessHandler authenticationSuccessHandler;
+
+    @Autowired
+    private AuthenticationFailureHandler authenticationFailureHandler;
+
+    @Autowired
+    private LogoutSuccessHandler logoutSuccessHandler;
+
     @Resource
     UserDetailsService userDetailsService;
 
@@ -39,16 +51,27 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .loginPage("/userLogin").permitAll()
                 .usernameParameter("username").passwordParameter("password")
                 .defaultSuccessUrl("/")
-                .failureForwardUrl("/userLogin?error");
+                .failureForwardUrl("/userLogin?error")
+                .successHandler(authenticationSuccessHandler)
+                .failureHandler(authenticationFailureHandler)
+                .and()
+                .exceptionHandling().authenticationEntryPoint(authenticationEntryPoint);
+
+
         //实现注销
        http.logout()
                 .logoutUrl("/userlogout")
-                .logoutSuccessUrl("/userLogin");
+                .logoutSuccessUrl("/userLogin")
+                .logoutSuccessHandler(logoutSuccessHandler)
+                .deleteCookies("JSESSIONID");
 
         //记住我
         http.rememberMe()
                 .rememberMeParameter("rememberme").tokenValiditySeconds(200)
                 .tokenRepository(tokenRepository());
+
+        //允许跨域访问
+        http.cors();
     }
 
     @Autowired
