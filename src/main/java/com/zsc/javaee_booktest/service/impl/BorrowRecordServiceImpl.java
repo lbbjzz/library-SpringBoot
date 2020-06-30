@@ -62,7 +62,6 @@ public class BorrowRecordServiceImpl implements BorrowRecordService {
         return borrowRecordRepository.findByBookIdAndUserId(bookId,userId);
     }
 
-    @CachePut
     @Override
     @CacheEvict(cacheNames = "borrowRecord", allEntries = true)
     public BorrowRecord save(BorrowRecord borrowRecord) {
