@@ -8,6 +8,7 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.authentication.rememberme.JdbcTokenRepositoryImpl;
 
 import javax.annotation.Resource;
@@ -16,25 +17,27 @@ import javax.sql.DataSource;
 @EnableWebSecurity
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
-    private AuthenticationEntryPoint authenticationEntryPoint;
+    private MyAuthenticationEntryPoint authenticationEntryPoint;
 
     @Autowired
-    private AuthenticationSuccessHandler authenticationSuccessHandler;
+    private MyAuthenticationSuccessHandler myAuthenticationSuccessHandler;
 
     @Autowired
-    private AuthenticationFailureHandler authenticationFailureHandler;
+    private MyAuthenticationFailureHandler myAuthenticationFailureHandler;
 
     @Autowired
-    private LogoutSuccessHandler logoutSuccessHandler;
+    private MyLogoutSuccessHandler myLogoutSuccessHandler;
 
     @Resource
     UserDetailsService userDetailsService;
+
 
     //实现用户身份认证
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
         BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
         auth.userDetailsService(userDetailsService).passwordEncoder(encoder);
+
     }
 
     @Override
@@ -49,20 +52,16 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         //使用自定义的登录窗口
         http.formLogin()
                 .loginPage("/userLogin").permitAll()
-                .usernameParameter("username").passwordParameter("password")
                 .defaultSuccessUrl("/")
-                .failureForwardUrl("/userLogin?error")
-                .successHandler(authenticationSuccessHandler)
-                .failureHandler(authenticationFailureHandler)
-                .and()
-                .exceptionHandling().authenticationEntryPoint(authenticationEntryPoint);
-
+                .failureForwardUrl("/userLogin?error");
+        http.exceptionHandling().authenticationEntryPoint(authenticationEntryPoint);
+        http.addFilterAt(myUsernamePasswordAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
 
         //实现注销
-       http.logout()
+        http.logout()
                 .logoutUrl("/userlogout")
                 .logoutSuccessUrl("/userLogin")
-                .logoutSuccessHandler(logoutSuccessHandler)
+                .logoutSuccessHandler(myLogoutSuccessHandler)
                 .deleteCookies("JSESSIONID");
 
         //记住我
@@ -83,5 +82,15 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         JdbcTokenRepositoryImpl jr = new JdbcTokenRepositoryImpl();
         jr.setDataSource(dataSource);
         return jr;
+    }
+
+    @Bean
+    MyUsernamePasswordAuthenticationFilter myUsernamePasswordAuthenticationFilter() throws Exception{
+        MyUsernamePasswordAuthenticationFilter filter = new MyUsernamePasswordAuthenticationFilter();
+        filter.setFilterProcessesUrl("/userLogin");
+        filter.setAuthenticationSuccessHandler(myAuthenticationSuccessHandler);
+        filter.setAuthenticationFailureHandler(myAuthenticationFailureHandler);
+        filter.setAuthenticationManager(authenticationManagerBean());
+        return filter;
     }
 }
