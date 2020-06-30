@@ -1,5 +1,7 @@
 package com.zsc.javaee_booktest.utils;
 
+import org.springframework.stereotype.Component;
+
 import java.io.Serializable;
 
 /**
@@ -9,6 +11,7 @@ import java.io.Serializable;
  * @Date 2020/6/29 16:28
  * @Version 1.0
  **/
+@Component
 public class JsonResult<T> implements Serializable {
     private Boolean success;
     private Integer code;
