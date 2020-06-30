@@ -14,4 +14,7 @@ public interface UserService extends UserDetailsService {
     public String saveWithEncoding(User user);
     public User getUser();
     public List<User> getAllUsers();
+    public void resetPwd(int userId, String password);
+    public void activeUser(int userId);
+    public void deActiveUser(int userId);
 }

@@ -23,6 +23,7 @@ public interface BorrowRecordRepository extends JpaRepository<BorrowRecord, Inte
     @Query(value = "select id from t_borrow_record where return_date = ?1", nativeQuery = true)
     public List<Integer> getId(String returnDate);
 
-    @Query(value = "select * from t_borrow_record where id = ?1", nativeQuery = true)
-    public BorrowRecord getRecord(int recordId);
+//    @Query(value = "select * from t_borrow_record where id = ?1", nativeQuery = true)
+//    public BorrowRecord getRecord(int recordId);
+    public BorrowRecord findBorrowRecordById(int recordId);
 }

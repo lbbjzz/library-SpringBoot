@@ -3,9 +3,6 @@ package com.zsc.javaee_booktest.service.impl;
 import com.querydsl.core.types.Predicate;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.zsc.javaee_booktest.entity.*;
-import com.zsc.javaee_booktest.entity.QAuthority;
-import com.zsc.javaee_booktest.entity.QRole;
-import com.zsc.javaee_booktest.entity.QUser;
 import com.zsc.javaee_booktest.repository.RoleRepository;
 import com.zsc.javaee_booktest.repository.UserRepository;
 import com.zsc.javaee_booktest.service.UserService;
@@ -129,5 +126,38 @@ public class UserServiceImpl implements UserService {
             System.out.println("用户名不存在");
             throw new UsernameNotFoundException("当前用户不存在");
         }
+    }
+
+    //修改密码
+    @Override
+    public void resetPwd(int userId, String password) {
+        BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+        String newPws = passwordEncoder.encode(password);
+        userRepository.resetPassword(userId, newPws);
+        System.out.println("修改成功。");
+    }
+
+    //激活
+    @Override
+    public void activeUser(int userId) {
+        User findUser = userRepository.findUserById(userId);
+        int valid = 1;
+        if (findUser.getValid() == 1) {
+            System.out.println("用户已激活，请勿重复操作。");
+        }
+        userRepository.activeOrDeActiveUser(findUser.getId(), valid);
+        System.out.println("用户已激活。");
+    }
+
+    //停用账户
+    @Override
+    public void deActiveUser(int userId) {
+        User findUser = userRepository.findUserById(userId);
+        int valid = 0;
+        if (findUser.getValid() == 0) {
+            System.out.println("用户已停用，请勿重复操作。");
+        }
+        userRepository.activeOrDeActiveUser(findUser.getId(), valid);
+        System.out.println("用户已停用。");
     }
 }

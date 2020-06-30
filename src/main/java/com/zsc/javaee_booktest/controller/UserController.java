@@ -39,4 +39,19 @@ public class UserController {
         userJPA.delete(user);
         return userJPA.findAll();
     }
+
+    @RequestMapping(value = "/resetPwd")
+    public void resetPwd(@RequestParam int id, @RequestParam String password) {
+        userService.resetPwd(id, password);
+    }
+
+    @RequestMapping(value = "/activeUser/{id}",method = RequestMethod.GET)
+    public void activeUser(@PathVariable int id) {
+        userService.activeUser(id);
+    }
+
+    @RequestMapping(value = "/deActiveUser/{id}",method = RequestMethod.GET)
+    public void deActiveUser(@PathVariable int id) {
+       userService.deActiveUser(id);
+    }
 }
