@@ -57,6 +57,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .exceptionHandling().authenticationEntryPoint(authenticationEntryPoint);
 
+
         //实现注销
        http.logout()
                 .logoutUrl("/userlogout")
