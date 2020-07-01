@@ -26,6 +26,12 @@ public class UserController {
 //    {
 //        return userJPA.findAll();
 //    }
+    @GetMapping("/getUser")
+    public User getUser(){
+        return userService.getUser();
+    }
+
+
 
     @RequestMapping(value = "/update",method = RequestMethod.GET)
     public User update(User user)

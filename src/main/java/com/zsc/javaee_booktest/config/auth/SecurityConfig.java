@@ -54,7 +54,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .loginPage("/userLogin").permitAll()
                 .defaultSuccessUrl("/")
                 .failureForwardUrl("/userLogin?error");
+
         http.exceptionHandling().authenticationEntryPoint(authenticationEntryPoint);
+
         http.addFilterAt(myUsernamePasswordAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
 
         //实现注销

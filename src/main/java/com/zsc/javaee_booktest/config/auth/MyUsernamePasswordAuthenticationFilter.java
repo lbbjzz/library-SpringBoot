@@ -28,7 +28,8 @@ public class MyUsernamePasswordAuthenticationFilter extends UsernamePasswordAuth
         if (!request.getMethod().equals("POST")) {
             throw new AuthenticationServiceException("Authentication method not supported: " + request.getMethod());
         }
-        if (request.getContentType().equals(MediaType.APPLICATION_JSON_VALUE)){
+        if (request.getContentType().equals(MediaType.APPLICATION_JSON_VALUE)
+            || request.getContentType().equals(MediaType.APPLICATION_JSON_UTF8_VALUE)){
             ObjectMapper mapper = new ObjectMapper();
 
             Map<String, String> authenticationBean = null;
@@ -53,7 +54,6 @@ public class MyUsernamePasswordAuthenticationFilter extends UsernamePasswordAuth
             }
             return null;
         } else{
-            System.out.println("????");
             return super.attemptAuthentication(request, response);
         }
     }
