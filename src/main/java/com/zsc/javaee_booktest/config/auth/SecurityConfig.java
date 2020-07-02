@@ -74,7 +74,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
         //允许跨域访问
         http.cors();
-
     }
 
     @Autowired
