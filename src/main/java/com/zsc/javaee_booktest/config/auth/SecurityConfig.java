@@ -73,7 +73,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .tokenRepository(tokenRepository());
 
         //允许跨域访问
-        http.authorizeRequests().requestMatchers(CorsUtils::isPreFlightRequest).permitAll();
+        http.cors();
 
     }
 
