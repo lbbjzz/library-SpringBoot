@@ -10,6 +10,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.authentication.rememberme.JdbcTokenRepositoryImpl;
+import org.springframework.web.cors.CorsUtils;
 
 import javax.annotation.Resource;
 import javax.sql.DataSource;
@@ -72,7 +73,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .tokenRepository(tokenRepository());
 
         //允许跨域访问
-        http.cors();
+        http.authorizeRequests().requestMatchers(CorsUtils::isPreFlightRequest).permitAll();
+
     }
 
     @Autowired
