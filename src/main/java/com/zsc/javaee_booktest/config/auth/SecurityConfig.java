@@ -74,6 +74,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
         //允许跨域访问
         http.cors();
+        http.authorizeRequests().requestMatchers(CorsUtils::isPreFlightRequest).permitAll();
     }
 
     @Autowired
