@@ -45,9 +45,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         //配置url的访问权限
         http.authorizeRequests()
+                .requestMatchers(CorsUtils::isPreFlightRequest).permitAll()
                 .antMatchers("/").permitAll()
                 .antMatchers("/login/**").permitAll()
                 .anyRequest().authenticated();
+
         //关闭csrf保护功能
         http.csrf().disable();
         //使用自定义的登录窗口
@@ -74,7 +76,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
         //允许跨域访问
         http.cors();
-        http.authorizeRequests().requestMatchers(CorsUtils::isPreFlightRequest).permitAll();
     }
 
     @Autowired
