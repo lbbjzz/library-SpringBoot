@@ -9,6 +9,7 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.filter.CorsFilter;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurationSupport;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 
 /**
@@ -19,25 +20,26 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter
  * @Version 1.0
  **/
 @Configuration
-public class CorsConfig extends WebMvcConfigurerAdapter {
-    @Override
-    public void addCorsMappings(CorsRegistry registry) {
-        registry.addMapping("/**")
-                .allowedOrigins("http://localhost:8888")
-                .allowedMethods("PUT", "DELETE", "GET", "POST", "OPTIONS")
-                .allowedHeaders("Content-type", "application/json")
-                .exposedHeaders("access-control-allow-headers",
-                        "access-control-allow-methods",
-                        "access-control-allow-origin",
-                        "access-control-max-age",
-                        "X-Frame-Options")
-                .allowCredentials(true).maxAge(3600);
+public class CorsConfig {
+    @Bean
+    public WebMvcConfigurer corsConfigurer() {
+        return new WebMvcConfigurer() {
+            @Override
+            public void addCorsMappings(CorsRegistry registry) {
+                registry.addMapping("/**")
+                        .allowedHeaders("*")
+                        .allowedMethods("*")
+                        .allowedOrigins("*")
+                        .allowCredentials(true);
+            }
+        };
+
     }
 
-    private CorsConfiguration buildConfig() {
+   /* private CorsConfiguration buildConfig() {
         CorsConfiguration corsConfiguration = new CorsConfiguration();
         corsConfiguration.addAllowedOrigin("http://localhost:8888");
-        corsConfiguration.addAllowedHeader("\"Content-type\", \"application/json\"");
+        corsConfiguration.addAllowedHeader("*");
         corsConfiguration.addAllowedMethod("\"PUT\", \"DELETE\", \"GET\", \"POST\", \"OPTIONS\"");
         corsConfiguration.setAllowCredentials(true);
         corsConfiguration.addExposedHeader("Authorization");
@@ -49,5 +51,5 @@ public class CorsConfig extends WebMvcConfigurerAdapter {
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", buildConfig());
         return new CorsFilter(source);
-    }
+    }*/
 }
