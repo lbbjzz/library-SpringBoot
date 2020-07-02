@@ -38,7 +38,7 @@ public class CorsConfig extends WebMvcConfigurerAdapter {
         CorsConfiguration corsConfiguration = new CorsConfiguration();
         corsConfiguration.addAllowedOrigin("http://localhost:8888");
         corsConfiguration.addAllowedHeader("Content-Type");
-        corsConfiguration.addAllowedMethod("*");
+        corsConfiguration.addAllowedMethod("\"PUT\", \"DELETE\", \"GET\", \"POST\", \"OPTIONS\"");
         corsConfiguration.setAllowCredentials(true);
         corsConfiguration.addExposedHeader("Authorization");
         return corsConfiguration;
