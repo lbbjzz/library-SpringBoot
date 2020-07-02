@@ -25,7 +25,7 @@ public class CorsConfig extends WebMvcConfigurerAdapter {
         registry.addMapping("/**")
                 .allowedOrigins("http://localhost:8888")
                 .allowedMethods("PUT", "DELETE", "GET", "POST", "OPTIONS")
-                .allowedHeaders("*")
+                .allowedHeaders("Content-Type")
                 /*.exposedHeaders("access-control-allow-headers",
                         "access-control-allow-methods",
                         "access-control-allow-origin",
@@ -37,7 +37,7 @@ public class CorsConfig extends WebMvcConfigurerAdapter {
     private CorsConfiguration buildConfig() {
         CorsConfiguration corsConfiguration = new CorsConfiguration();
         corsConfiguration.addAllowedOrigin("http://localhost:8888");
-        corsConfiguration.addAllowedHeader("*");
+        corsConfiguration.addAllowedHeader("Content-Type");
         corsConfiguration.addAllowedMethod("*");
         corsConfiguration.setAllowCredentials(true);
         corsConfiguration.addExposedHeader("Authorization");
