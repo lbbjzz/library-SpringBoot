@@ -114,18 +114,17 @@ public class SendEmailService {
     BookRepository bookRepository;
 
     //@GetMapping("/sendCodeEmail")
-    public String sendCodeEmail() throws Exception {
+    public String sendCodeEmail(User user) throws Exception {
         try {
             ignoreSsl();
         } catch (Exception e) {
             e.printStackTrace();
         }
-        User findUser = userService.getUser();
-        String receiver = findUser.getEmail();
+        String receiver = user.getEmail();
         String subject = "图书借阅系统注册账号验证码";
         Context context = new Context();
-        context.setVariable("username", findUser.getUserName());
-        context.setVariable("sex", findUser.getSex());
+        context.setVariable("username", user.getUserName());
+        context.setVariable("sex", user.getSex());
         String code = RandomString.make(5);
         context.setVariable("code", code);
         String emailContent = templateEngine.process("email/codeEmail", context);
