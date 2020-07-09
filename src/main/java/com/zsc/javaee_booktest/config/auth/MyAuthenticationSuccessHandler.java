@@ -51,17 +51,18 @@ public class MyAuthenticationSuccessHandler extends JSONAuthentication implement
         Menu bookManager = new Menu("/bookmanage", "bookmanage", "图书管理", "reading", "Book/Bookmanage", null);
         Menu bookBorrow = new Menu("/bookborrow", "bookborrow", "图书借阅", "setting", "Book/Bookborrow", null);
         Menu userInfo = new Menu("/userinfo", "userinfo", "个人中心", "user", "UserInfo/UserInfo", null);
-        Menu bookManagerMenu = new Menu(null, null, "图书", "reading", null, bookManager);
-        Menu bookGuestMenu = new Menu(null, null, "图书", "reading", null, bookBorrow);
+        //Menu bookManagerMenu = new Menu(null, null, "图书", "reading", null, bookManager);
+        //Menu bookGuestMenu = new Menu(null, null, "图书", "reading", null, bookBorrow);
 
         menuList.add(home);
         System.out.println(authority.get(0).getAuthority());
         if (authority.get(0).getAuthority().equals("manager")){
             menuList.add(userManager);
-            menuList.add(bookManagerMenu);
+            menuList.add(bookManager);
+            menuList.add(userInfo);
         }else {
             menuList.add(userInfo);
-            menuList.add(bookGuestMenu);
+            menuList.add(bookBorrow);
         }
 
 
