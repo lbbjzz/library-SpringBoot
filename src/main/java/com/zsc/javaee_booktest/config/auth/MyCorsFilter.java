@@ -3,6 +3,9 @@ package com.zsc.javaee_booktest.config.auth;
 import org.springframework.context.annotation.Configuration;
 
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.core.annotation.Order;
+import org.springframework.web.filter.OncePerRequestFilter;
+
 import javax.servlet.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -15,20 +18,20 @@ import java.io.IOException;
  * @Version 1.0
  **/
 @Configuration
-public class MyCorsFilter implements Filter {
-    @Override
-    public void init(FilterConfig filterConfig) throws ServletException {
-    }
+public class MyCorsFilter extends OncePerRequestFilter{
+
 
     @Override
-    public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
+    protected void doFilterInternal(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, FilterChain filterChain) throws ServletException, IOException {
         System.out.println("开始拦截");
-        HttpServletResponse response = (HttpServletResponse) servletResponse;
-        HttpServletRequest request = (HttpServletRequest) servletRequest;
+        HttpServletResponse response = (HttpServletResponse) httpServletResponse;
+        HttpServletRequest request = (HttpServletRequest) httpServletRequest;
 
         // 不使用*，自动适配跨域域名，避免携带Cookie时失效
         String origin = request.getHeader("Origin");
+
         if(StringUtils.isNotBlank(origin)) {
+            System.out.println(origin);
             response.setHeader("Access-Control-Allow-Origin", origin);
         }
 

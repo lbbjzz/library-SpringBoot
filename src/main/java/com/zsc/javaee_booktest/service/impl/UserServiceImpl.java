@@ -8,6 +8,7 @@ import com.zsc.javaee_booktest.repository.UserRepository;
 import com.zsc.javaee_booktest.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheConfig;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -55,6 +56,7 @@ public class UserServiceImpl implements UserService {
     * @return java.util.List<com.zsc.javaee_booktest.entity.Authority>
     **/
     @Override
+    @Cacheable(cacheNames = "user", key = "'getAuthorityByUserName' + #userName")
     public List<Authority> getAuthorityByUserName(String userName) {
         Predicate predicate = qUser.userName.eq(userName);
         List<Authority> authorities = queryFactory.select(qAuthority)
@@ -68,6 +70,12 @@ public class UserServiceImpl implements UserService {
         return authorities;
     }
 
+    @Override
+    @Cacheable(cacheNames = "user", key = "'getRoleByUserId' + #userId")
+    public List<Role> getRoleByUserId(int userId){
+        return roleRepository.findByUserId(userId);
+    }
+
     /*
     * @Author Kami
     * @Description 用户注册功能，将用户密码转换为密文后写入数据库中
@@ -76,22 +84,35 @@ public class UserServiceImpl implements UserService {
     * @return java.lang.String
     **/
     @Override
-    public String saveWithEncoding(User user) {
+    @CacheEvict(cacheNames = "user", allEntries = true)
+    public User saveWithEncoding(User user) {
         String msg;
         if(userRepository.getByUserName(user.getUserName()) != null){
-            msg = "fail";
-            return msg;
+            return null;
         }else {
             BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
             user.setPassword(passwordEncoder.encode(user.getPassword()));
             User newUser = userRepository.save(user);
             Role role = new Role();
             role.setUserId(newUser.getId());
-            role.setAuthorityId(2);
-            roleRepository.save(role);
-            msg = "success";
-            return msg;
+            if(getRoleByUserId(user.getId()).isEmpty()){
+                role.setAuthorityId(2);
+                roleRepository.save(role);
+            }
+            return newUser;
         }
+}
+
+    @Override
+    @Cacheable(cacheNames = "user", key = "'getByUserName' + #userName")
+    public User getByUserName(String userName){
+        return userRepository.getByUserName(userName);
+    }
+
+    @Override
+    @Cacheable(cacheNames = "user", key = "'getById' + #userId")
+    public User getById(int userId){
+        return userRepository.findUserById(userId);
     }
 
     /*
@@ -107,13 +128,13 @@ public class UserServiceImpl implements UserService {
         Authentication authentication = context.getAuthentication();
         UserDetails principal = (UserDetails) authentication.getPrincipal();
         String userName = principal.getUsername();
-        User user = userRepository.getByUserName(userName);
+        User user = getByUserName(userName);
         return user;
     }
 
     @Override
     public UserDetails loadUserByUsername(String userName) throws UsernameNotFoundException {
-        User user = userRepository.getByUserName(userName);
+        User user = getByUserName(userName);
         if(user != null){
             List<Authority> authorities = userService.getAuthorityByUserName(userName);
             List<SimpleGrantedAuthority> list = authorities.stream()
@@ -130,6 +151,7 @@ public class UserServiceImpl implements UserService {
 
     //修改密码
     @Override
+    @CacheEvict(cacheNames = "user", allEntries = true)
     public void resetPwd(int userId, String password) {
         BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
         String newPws = passwordEncoder.encode(password);
@@ -139,6 +161,7 @@ public class UserServiceImpl implements UserService {
 
     //激活
     @Override
+    @CacheEvict(cacheNames = "user", allEntries = true)
     public void activeUser(int userId) {
         User findUser = userRepository.findUserById(userId);
         int valid = 1;
@@ -151,6 +174,7 @@ public class UserServiceImpl implements UserService {
 
     //停用账户
     @Override
+    @CacheEvict(cacheNames = "user", allEntries = true)
     public void deActiveUser(int userId) {
         User findUser = userRepository.findUserById(userId);
         int valid = 0;
@@ -159,5 +183,11 @@ public class UserServiceImpl implements UserService {
         }
         userRepository.activeOrDeActiveUser(findUser.getId(), valid);
         System.out.println("用户已停用。");
+    }
+
+    @Override
+    @CacheEvict(cacheNames = "user", allEntries = true)
+    public void deleteById(int userId){
+        userRepository.deleteById(userId);
     }
 }

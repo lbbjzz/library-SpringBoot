@@ -42,23 +42,6 @@ class UserRepositoryTest {
     }
 
     @Test
-    void saveWithEncoding(){
-        User user = new User();
-        user.setUserName("asdas");
-        user.setPassword("123");
-        user.setEmail("test");
-        user.setSex("nan");
-        user.setPhone("12312312");
-        user.setAge(11);
-        String msg = userService.saveWithEncoding(user);
-        if(msg.equals("success")){
-            System.out.println("注册成功");
-        } else {
-            System.out.println("该用户名已存在");
-        }
-    }
-
-    @Test
     void deleteById(){
         userRepository.deleteById(4);
     }
