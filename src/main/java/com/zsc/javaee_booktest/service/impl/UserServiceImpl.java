@@ -43,7 +43,7 @@ public class UserServiceImpl implements UserService {
     QUser qUser = QUser.user;
 
     @Override
-    @Cacheable(value = "getAllUser")
+    @Cacheable(cacheNames = "user", key = "'getAllUsers'")
     public List<User> getAllUsers() {
         return userRepository.findAll();
     }
