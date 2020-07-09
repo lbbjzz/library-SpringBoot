@@ -11,6 +11,8 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
 
+
+import java.net.URLDecoder;
 import java.util.List;
 import java.util.Map;
 
@@ -29,7 +31,8 @@ public class BookController {
     }
 
     @GetMapping("/findByName/{bookName}/{page}/{size}")
-    public Map<String, Object> findByName(@PathVariable String bookName, @PathVariable int page, @PathVariable int size){
+    public Map<String, Object> findByName(@PathVariable String bookName, @PathVariable int page, @PathVariable int size)throws Exception{
+        bookName = URLDecoder.decode(bookName, "UTF-8");
         List<Book> booksByName = bookService.getByBookName(bookName);
         PageUtils pageUtils = new PageUtils();
         Map<String, Object> pageInfo = pageUtils.startPage(booksByName, page, size);

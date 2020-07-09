@@ -45,4 +45,11 @@ class UserRepositoryTest {
     void deleteById(){
         userRepository.deleteById(4);
     }
+
+    @Test
+    void update(){
+        User user = userService.getById(1);
+        user.setAge(20);
+        System.out.println(userService.saveWithEncoding(user));
+    }
 }

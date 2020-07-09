@@ -10,6 +10,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.redis.core.RedisTemplate;
 
+import java.net.URLDecoder;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
@@ -79,7 +80,10 @@ class BookReposityTest {
     }
 
     @Test
-    void testPage(){
-
+    void testPage()throws Exception{
+        String a = "%E7%99%BD";
+        String b = URLDecoder.decode(a, "UTF-8");
+        System.out.println(bookRepository.getByBookName("夜"));
+        System.out.println(bookRepository.getByBookName(b));
     }
 }

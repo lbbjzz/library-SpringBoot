@@ -86,31 +86,28 @@ public class UserServiceImpl implements UserService {
     @Override
     @CacheEvict(cacheNames = "user", allEntries = true)
     public User saveWithEncoding(User user) {
-        String msg;
+        BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
         if(userRepository.getByUserName(user.getUserName()) != null){
-            return null;
+            return userRepository.save(user);
         }else {
-            BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
-            user.setPassword(passwordEncoder.encode(user.getPassword()));
             User newUser = userRepository.save(user);
             Role role = new Role();
             role.setUserId(newUser.getId());
-            if(getRoleByUserId(user.getId()).isEmpty()){
-                role.setAuthorityId(2);
-                roleRepository.save(role);
-            }
+            role.setAuthorityId(2);
+            roleRepository.save(role);
             return newUser;
         }
 }
 
     @Override
-    @Cacheable(cacheNames = "user", key = "'getByUserName' + #userName")
+    @Cacheable(cacheNames = "user", key = "'getByUserName-' + #userName")
     public User getByUserName(String userName){
         return userRepository.getByUserName(userName);
     }
 
     @Override
-    @Cacheable(cacheNames = "user", key = "'getById' + #userId")
+    @Cacheable(cacheNames = "user", key = "'getById-' + #userId")
     public User getById(int userId){
         return userRepository.findUserById(userId);
     }
