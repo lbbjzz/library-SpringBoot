@@ -31,13 +31,13 @@ public class BorrowController {
         return pageInfo;
     }
 
-    @GetMapping("/findByUserId/{userId}")
+    @GetMapping("/findByUserId/{bookId}/{userId}")
     public BorrowRecord findByBookIdAndUserId(@PathVariable int bookId, @PathVariable int userId){
         BorrowRecord record = borrowRecordService.getByBookIdAndUserId(bookId, userId);
         return record;
     }
 
-    @PostMapping("/save")
+    @PutMapping("/save")
     public String save(@RequestBody BorrowRecord borrowRecord){
         BorrowRecord record = borrowRecordService.save(borrowRecord);
         if(record != null){
