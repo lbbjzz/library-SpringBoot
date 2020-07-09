@@ -45,19 +45,19 @@ public class BorrowRecordServiceImpl implements BorrowRecordService {
     }
 
     @Override
-    @Cacheable(cacheNames = "borrowRecord", key = "'getByBookId' + #bookId")
+    @Cacheable(cacheNames = "borrowRecord", key = "'getByBookId' + #bookId", unless = "#result == null")
     public List<BorrowRecord> getByBookId(int bookId) {
         return borrowRecordRepository.findByBookId(bookId);
     }
 
     @Override
-    @Cacheable(cacheNames = "borrowRecord", key = "'getByBookId' + #userId")
+    @Cacheable(cacheNames = "borrowRecord", key = "'getByBookId' + #userId", unless = "#result == null")
     public List<BorrowRecord> getByUserId(int userId) {
         return borrowRecordRepository.findByUserId(userId);
     }
 
     @Override
-    @Cacheable(cacheNames = "borrowRecord", key = "'getByBookIdAndUserId' + #bookId + '-' + #userId")
+    @Cacheable(cacheNames = "borrowRecord", key = "'getByBookIdAndUserId' + #bookId + '-' + #userId", unless = "#result == null")
     public BorrowRecord getByBookIdAndUserId(int bookId, int userId){
         return borrowRecordRepository.findByBookIdAndUserId(bookId,userId);
     }

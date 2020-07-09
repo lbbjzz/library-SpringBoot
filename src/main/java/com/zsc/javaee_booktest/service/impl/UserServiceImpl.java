@@ -43,7 +43,7 @@ public class UserServiceImpl implements UserService {
     QUser qUser = QUser.user;
 
     @Override
-    @Cacheable(cacheNames = "user", key = "'getAllUsers'")
+    @Cacheable(cacheNames = "user", key = "'getAllUsers'", unless = "#result == null")
     public List<User> getAllUsers() {
         return userRepository.findAll();
     }
@@ -56,7 +56,7 @@ public class UserServiceImpl implements UserService {
     * @return java.util.List<com.zsc.javaee_booktest.entity.Authority>
     **/
     @Override
-    @Cacheable(cacheNames = "user", key = "'getAuthorityByUserName' + #userName")
+    @Cacheable(cacheNames = "user", key = "'getAuthorityByUserName' + #userName", unless = "#result == null")
     public List<Authority> getAuthorityByUserName(String userName) {
         Predicate predicate = qUser.userName.eq(userName);
         List<Authority> authorities = queryFactory.select(qAuthority)
@@ -71,7 +71,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    @Cacheable(cacheNames = "user", key = "'getRoleByUserId' + #userId")
+    @Cacheable(cacheNames = "user", key = "'getRoleByUserId' + #userId", unless = "#result == null")
     public List<Role> getRoleByUserId(int userId){
         return roleRepository.findByUserId(userId);
     }
@@ -101,7 +101,7 @@ public class UserServiceImpl implements UserService {
 }
 
     @Override
-    @Cacheable(cacheNames = "user", key = "'getByUserName-' + #userName")
+    @Cacheable(cacheNames = "user", key = "'getByUserName-' + #userName", unless = "#result == null")
     public User getByUserName(String userName){
         return userRepository.getByUserName(userName);
     }
