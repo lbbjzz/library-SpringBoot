@@ -83,7 +83,7 @@ public class BookServiceImpl implements BookService {
             return "exist";
         } else {
             book.setQuantity(book.getQuantity() - 1);
-            save(book);
+            this.save(book);
             Date date = new Date();
             Calendar calendar = Calendar.getInstance();
             calendar.setTime(date);
