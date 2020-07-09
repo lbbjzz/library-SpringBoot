@@ -64,7 +64,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
         http.addFilterAt(myUsernamePasswordAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
 
-        //http.addFilterBefore(new MyCorsFilter(), ChannelProcessingFilter.class);
+        http.addFilterBefore(new MyCorsFilter(), ChannelProcessingFilter.class);
 
         //实现注销
         http.logout()

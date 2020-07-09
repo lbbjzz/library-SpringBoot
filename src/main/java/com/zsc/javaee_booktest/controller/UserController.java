@@ -30,7 +30,7 @@ public class UserController {
         return userService.getUser();
     }
 
-    @RequestMapping(value = "/save",method = RequestMethod.POST)
+    @RequestMapping(value = "/save",method = RequestMethod.PUT)
     public String update(@RequestBody User user)
     {
         User result = userService.saveWithEncoding(user);

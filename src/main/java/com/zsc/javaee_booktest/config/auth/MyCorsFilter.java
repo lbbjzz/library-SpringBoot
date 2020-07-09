@@ -4,7 +4,6 @@ import org.springframework.context.annotation.Configuration;
 
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.core.annotation.Order;
-import org.springframework.web.filter.OncePerRequestFilter;
 
 import javax.servlet.*;
 import javax.servlet.http.HttpServletRequest;
@@ -18,14 +17,16 @@ import java.io.IOException;
  * @Version 1.0
  **/
 @Configuration
-public class MyCorsFilter extends OncePerRequestFilter{
-
+public class MyCorsFilter implements Filter{
+    @Override
+    public void init(FilterConfig filterConfig) throws ServletException {
+    }
 
     @Override
-    protected void doFilterInternal(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, FilterChain filterChain) throws ServletException, IOException {
+    public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
         System.out.println("开始拦截");
-        HttpServletResponse response = (HttpServletResponse) httpServletResponse;
-        HttpServletRequest request = (HttpServletRequest) httpServletRequest;
+        HttpServletResponse response = (HttpServletResponse) servletResponse;
+        HttpServletRequest request = (HttpServletRequest) servletRequest;
 
         // 不使用*，自动适配跨域域名，避免携带Cookie时失效
         String origin = request.getHeader("Origin");
