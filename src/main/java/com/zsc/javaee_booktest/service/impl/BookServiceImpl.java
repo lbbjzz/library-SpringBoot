@@ -40,8 +40,9 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
-    @Cacheable(cacheNames = "book", key = "'getByBookName-' + #bookName")
+    //@Cacheable(cacheNames = "book", key = "'getByBookName-' + #bookName")
     public List<Book> getByBookName(String bookName){
+        bookName = "%" + bookName + "%";
         return bookRepository.getByBookName(bookName);
     }
 

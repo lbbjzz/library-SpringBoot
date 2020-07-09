@@ -38,7 +38,8 @@ class UserRepositoryTest {
     @Test
     void EncodingTest(){
         BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
-        System.out.println(passwordEncoder.encode("123456"));
+        System.out.println(passwordEncoder.encode("123"));
+        System.out.println(passwordEncoder.matches("123", "$2a$10$BEWjBGWCGdKCNtPzIb.FWOlaFFsGZFwOjHAVS5ZvjihKUyE2Uny9C"));
     }
 
     @Test

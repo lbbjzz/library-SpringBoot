@@ -83,7 +83,8 @@ class BookReposityTest {
     void testPage()throws Exception{
         String a = "%E7%99%BD";
         String b = URLDecoder.decode(a, "UTF-8");
-        System.out.println(bookRepository.getByBookName("夜"));
+        System.out.println(bookRepository.findByBookNameLike("%行%"));
+        System.out.println(bookRepository.getByBookName("%夜%"));
         System.out.println(bookRepository.getByBookName(b));
     }
 }
