@@ -50,6 +50,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .requestMatchers(CorsUtils::isPreFlightRequest).permitAll()
                 .antMatchers("/").permitAll()
                 .antMatchers("/login/**").permitAll()
+                .antMatchers("/user/register").permitAll()
                 .anyRequest().authenticated();
 
         //关闭csrf保护功能

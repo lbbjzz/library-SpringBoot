@@ -30,6 +30,16 @@ public class UserController {
         return userService.getUser();
     }
 
+    @PutMapping("/register")
+    public String register(@RequestBody User user){
+        User result = userService.saveWithEncoding(user);
+        if(result != null){
+            return "success";
+        } else {
+            return "fail";
+        }
+    }
+
     @RequestMapping(value = "/save",method = RequestMethod.PUT)
     public String update(@RequestBody User user)
     {
