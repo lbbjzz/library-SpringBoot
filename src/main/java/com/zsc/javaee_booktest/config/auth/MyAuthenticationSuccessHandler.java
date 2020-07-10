@@ -49,7 +49,7 @@ public class MyAuthenticationSuccessHandler extends JSONAuthentication implement
         Menu home = new Menu("/home","home","首页","s-home","Home/Home", null);
         Menu userManager = new Menu("/user", "usermanage", "用户管理", "user", "UserManage/Usermanage", null);
         Menu bookManager = new Menu("/bookmanage", "bookmanage", "图书管理", "reading", "Book/Bookmanage", null);
-        Menu bookBorrow = new Menu("/bookborrow", "bookborrow", "图书借阅", "setting", "Book/Bookborrow", null);
+        Menu bookBorrow = new Menu("/bookborrow", "bookborrow", "图书借阅", "reading", "Book/Bookborrow", null);
         Menu userInfo = new Menu("/userinfo", "userinfo", "个人中心", "user", "UserInfo/UserInfo", null);
         //Menu bookManagerMenu = new Menu(null, null, "图书", "reading", null, bookManager);
         //Menu bookGuestMenu = new Menu(null, null, "图书", "reading", null, bookBorrow);
