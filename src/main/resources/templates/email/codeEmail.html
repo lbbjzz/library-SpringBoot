@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>用户验证码</title>
+</head>
+<body>
+<div><span th:text="${username}">XXX</span> <span th:text="${sex}">女士/先生</span>，您好
+</div>
+<p style="text-indent: 2em">你的用户验证码为:<span th:text="${code}" style="color: lightcoral; font-size: 24px"></span></p>
+<p>请妥善保管，不要泄露给其他人。</p>
+<h2 style="text-indent: 2em">欢迎使用图书借阅系统</h2>
+</body>
+</html>
