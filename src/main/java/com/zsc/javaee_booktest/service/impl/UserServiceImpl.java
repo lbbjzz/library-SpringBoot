@@ -86,11 +86,11 @@ public class UserServiceImpl implements UserService {
     @Override
     @CacheEvict(cacheNames = "user", allEntries = true)
     public User saveWithEncoding(User user) {
-        BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
-        user.setPassword(passwordEncoder.encode(user.getPassword()));
         if(userRepository.getByUserName(user.getUserName()) != null){
             return userRepository.save(user);
         }else {
+            BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+            user.setPassword(passwordEncoder.encode(user.getPassword()));
             User newUser = userRepository.save(user);
             Role role = new Role();
             role.setUserId(newUser.getId());

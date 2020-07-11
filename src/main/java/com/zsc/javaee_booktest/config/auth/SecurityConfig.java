@@ -51,6 +51,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/").permitAll()
                 .antMatchers("/login/**").permitAll()
                 .antMatchers("/user/register").permitAll()
+                .antMatchers("/sendCodeEmail").permitAll()
                 .anyRequest().authenticated();
 
         //关闭csrf保护功能
