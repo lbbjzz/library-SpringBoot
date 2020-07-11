@@ -32,11 +32,15 @@ public class UserController {
 
     @PutMapping("/register")
     public String register(@RequestBody User user){
-        User result = userService.saveWithEncoding(user);
-        if(result != null){
-            return "success";
-        } else {
-            return "fail";
+        if(userService.getByUserName(user.getUserName()) != null){
+            return "exist";
+        }else {
+            User result = userService.saveWithEncoding(user);
+            if(result != null){
+                return "success";
+            } else {
+                return "fail";
+            }
         }
     }
 
