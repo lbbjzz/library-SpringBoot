@@ -4,6 +4,7 @@ import com.zsc.javaee_booktest.entity.User;
 import com.zsc.javaee_booktest.service.SendEmailService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -12,7 +13,7 @@ public class EmailController {
     @Autowired
     SendEmailService sendEmailService;
 
-    @GetMapping("/sendCodeEmail")
+    @PostMapping("/sendCodeEmail")
     public String sendCodeEmail(@RequestBody User user) throws Exception {
         return sendEmailService.sendCodeEmail(user);
     }
