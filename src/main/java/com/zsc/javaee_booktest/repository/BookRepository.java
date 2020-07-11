@@ -7,8 +7,9 @@ import org.springframework.data.jpa.repository.Query;
 import java.util.List;
 
 public interface BookRepository extends JpaRepository<Book, Integer>{
-    @Query(value = "select * from t_book where book_name like '%?1%'", nativeQuery = true)
+    @Query(value = "select * from t_book where book_name like ?1", nativeQuery = true)
     public List<Book> getByBookName(String bookName);
 
+    public List<Book> findByBookNameLike(String bookName);
     public Book findBookById(int userId);
 }

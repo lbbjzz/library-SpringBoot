@@ -11,8 +11,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/user")
 public class UserController {
-    @Autowired
-    private UserRepository userJPA;
+
     @Autowired
     UserService userService;
 
@@ -26,23 +25,41 @@ public class UserController {
 //    {
 //        return userJPA.findAll();
 //    }
-
-    @RequestMapping(value = "/update",method = RequestMethod.GET)
-    public User update(User user)
-    {
-        return userJPA.save(user);
+    @GetMapping("/getUser")
+    public User getUser(){
+        return userService.getUser();
     }
 
-    @RequestMapping(value = "/delete",method = RequestMethod.GET)
-    public List<User> delete(User user)
+    @PutMapping("/register")
+    public String register(@RequestBody User user){
+        User result = userService.saveWithEncoding(user);
+        if(result != null){
+            return "success";
+        } else {
+            return "fail";
+        }
+    }
+
+    @RequestMapping(value = "/save",method = RequestMethod.PUT)
+    public String update(@RequestBody User user)
     {
-        userJPA.delete(user);
-        return userJPA.findAll();
+        User result = userService.saveWithEncoding(user);
+        if(result != null){
+            return "success";
+        } else {
+            return "fail";
+        }
+    }
+
+    @RequestMapping(value = "/delete/{id}",method = RequestMethod.GET)
+    public void delete(@PathVariable int id)
+    {
+        userService.deleteById(id);
     }
 
     @RequestMapping(value = "/resetPwd")
-    public void resetPwd(@RequestParam int id, @RequestParam String password) {
-        userService.resetPwd(id, password);
+    public void resetPwd(@RequestBody User user) {
+        userService.resetPwd(user.getId(), user.getPassword());
     }
 
     @RequestMapping(value = "/activeUser/{id}",method = RequestMethod.GET)

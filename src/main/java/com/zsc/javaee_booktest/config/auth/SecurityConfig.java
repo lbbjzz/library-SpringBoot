@@ -8,8 +8,10 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.web.access.channel.ChannelProcessingFilter;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.authentication.rememberme.JdbcTokenRepositoryImpl;
+import org.springframework.web.cors.CorsUtils;
 
 import javax.annotation.Resource;
 import javax.sql.DataSource;
@@ -28,6 +30,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     private MyLogoutSuccessHandler myLogoutSuccessHandler;
 
+
     @Resource
     UserDetailsService userDetailsService;
 
@@ -44,9 +47,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         //配置url的访问权限
         http.authorizeRequests()
+                .requestMatchers(CorsUtils::isPreFlightRequest).permitAll()
                 .antMatchers("/").permitAll()
                 .antMatchers("/login/**").permitAll()
+                .antMatchers("/user/register").permitAll()
                 .anyRequest().authenticated();
+
         //关闭csrf保护功能
         http.csrf().disable();
         //使用自定义的登录窗口
@@ -54,8 +60,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .loginPage("/userLogin").permitAll()
                 .defaultSuccessUrl("/")
                 .failureForwardUrl("/userLogin?error");
+
         http.exceptionHandling().authenticationEntryPoint(authenticationEntryPoint);
+
         http.addFilterAt(myUsernamePasswordAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
+
+        http.addFilterBefore(new MyCorsFilter(), ChannelProcessingFilter.class);
 
         //实现注销
         http.logout()

@@ -6,6 +6,7 @@ import com.zsc.javaee_booktest.service.ReturnRecordService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
+import org.springframework.cache.annotation.Caching;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -34,7 +35,10 @@ public class ReturnRecordServiceImpl implements ReturnRecordService {
     }
 
     @Override
-    @CacheEvict(cacheNames = "returnRecord", allEntries = true)
+    @Caching(evict = {
+            @CacheEvict(cacheNames = "returnRecord", allEntries = true),
+            @CacheEvict(cacheNames = "book", allEntries = true)
+    })
     public ReturnRecord save(ReturnRecord returnRecord) {
         return returnRecordRepository.save(returnRecord);
     }

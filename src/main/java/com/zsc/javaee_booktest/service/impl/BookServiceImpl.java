@@ -34,19 +34,20 @@ public class BookServiceImpl implements BookService {
 
 
     @Override
-    @Cacheable(cacheNames = "book", key = "'getAllBooks'")
+    @Cacheable(cacheNames = "book", key = "'getAllBooks'", unless = "#result == null")
     public List<Book> getAllBooks(int page, int size) {
         return bookRepository.findAll();
     }
 
     @Override
-    @Cacheable(cacheNames = "book", key = "'getByBookName' + #bookName")
+    @Cacheable(cacheNames = "book", key = "'getByBookName-' + #bookName", unless = "#result == null")
     public List<Book> getByBookName(String bookName){
+        bookName = "%" + bookName + "%";
         return bookRepository.getByBookName(bookName);
     }
 
     @Override
-    @Cacheable(cacheNames = "book", key = "'getByBookId' + #id")
+    @Cacheable(cacheNames = "book", key = "'getByBookId-' + #id", unless = "#result == null")
     public Book getByBookId(int id){
         return bookRepository.findById(id).get();
     }
@@ -82,7 +83,7 @@ public class BookServiceImpl implements BookService {
             return "exist";
         } else {
             book.setQuantity(book.getQuantity() - 1);
-            save(book);
+            this.save(book);
             Date date = new Date();
             Calendar calendar = Calendar.getInstance();
             calendar.setTime(date);
